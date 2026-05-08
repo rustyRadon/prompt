@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+  <description>Master system prompt template that combines base personality, creative type, mode, and runtime data</description>
+  
+  <structure>
+    <section name="base_personality" required="true">
+      <source>core/base.xml</source>
+      <purpose>Defines fundamental AI behavior and principles</purpose>
+    </section>
+    
+    <section name="creative_personality" required="false">
+      <source>creatives/{user_type}.xml</source>
+      <purpose>Adds domain-specific expertise and approaches</purpose>
+    </section>
+    
+    <section name="mode" required="false">
+      <source>modes/{mode}.xml</source>
+      <purpose>Adapts interaction style for specific context</purpose>
+    </section>
+    
+    <section name="runtime_memory" required="false">
+      <source>dynamic/memory_injection.xml</source>
+      <purpose>Injects user-specific memories and context</purpose>
+    </section>
+    
+    <section name="runtime_context" required="false">
+      <source>dynamic/context_injection.xml</source>
+      <purpose>Adds current conversation context and state</purpose>
+    </section>
+    
+    <section name="safety_boundaries" required="true">
+      <source>core/boundaries.xml</source>
+      <purpose>Ensures ethical and safe interactions</purpose>
+    </section>
+  </structure>
+  
+  <compilation_rules>
+    <rule name="order">
+      <sequence>base → creative → mode → memory → context → boundaries</sequence>
+      <rationale>Builds from general principles to specific runtime data</rationale>
+    </rule>
+    
+    <rule name="deduplication">
+      <method>Remove duplicate principles and rules</method>
+      <priority>High - prevents conflicting instructions</priority>
+    </rule>
+    
+    <rule name="optimization">
+      <method>Remove redundant content and optimize structure</method>
+      <priority>Medium - improves prompt efficiency</priority>
+    </rule>
+    
+    <rule name="validation">
+      <method>Ensure XML validity and required sections</method>
+      <priority>High - prevents prompt failures</priority>
+    </rule>
+  </compilation_rules>
+  
+  <variable_handling>
+    <variable name="user_name" type="string">
+      <description>User's preferred name or identifier</description>
+      <validation>Required for personalization</validation>
+    </variable>
+    
+    <variable name="user_type" type="enum">
+      <options>writer, musician, filmmaker, director, creative, analyst, default</options>
+      <description>User's creative or professional domain</description>
+      <validation>Must match available personality files</validation>
+    </variable>
+    
+    <variable name="mode" type="enum">
+      <options>brainstorm, critique, planning, motivation, deep-focus</options>
+      <description>Current interaction mode or context</description>
+      <validation>Must match available mode files</validation>
+    </variable>
+    
+    <variable name="current_task" type="string">
+      <description>What user is currently working on</description>
+      <validation>Optional but recommended for context</validation>
+    </variable>
+    
+    <variable name="emotional_state" type="enum">
+      <options>neutral, happy, sad, frustrated, anxious, excited, confused</options>
+      <description>User's current emotional state</description>
+      <validation>Optional, used for response adaptation</validation>
+    </variable>
+    
+    <variable name="conversation_history" type="array">
+      <description>Recent conversation messages</description>
+      <validation>Optional, limited to last 10 messages</validation>
+    </variable>
+    
+    <variable name="user_goals" type="array">
+      <description>User's stated objectives and targets</description>
+      <validation>Optional, used for contextual assistance</validation>
+    </variable>
+  </variable_handling>
+  
+  <output_format>
+    <description>Final compiled prompt structure for AI model</description>
+    <structure>
+      <system_prompt>
+        <![CDATA[
+          Combined XML content from all sections
+          with variables injected
+          and optimized for model consumption
+        ]]>
+      </system_prompt>
+    </structure>
+  </output_format>
+  
+  <quality_assurance>
+    <check name="xml_validity">
+      <description>Ensure all XML is well-formed</description>
+    </check>
+    
+    <check name="section_completeness">
+      <description>Verify all required sections are present</description>
+    </check>
+    
+    <check name="variable_resolution">
+      <description>Ensure all variables are properly replaced</description>
+    </check>
+    
+    <check name="length_optimization">
+      <description>Keep prompt within model token limits</description>
+    </check>
+    
+    <check name="consistency_check">
+      <description>Ensure no conflicting instructions</description>
+    </check>
+  </quality_assurance>
+</template>
